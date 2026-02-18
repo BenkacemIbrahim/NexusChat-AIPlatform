@@ -21,7 +21,7 @@ interface ChatHeaderProps {
 }
 
 export function ChatHeader({ onToggleSidebar }: ChatHeaderProps) {
-  const [currentPlan, setCurrentPlan] = useState("Free")
+  const [currentPlan] = useState("Free")
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const { user, logout } = useAuth()

@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import { ArrowLeft, Upload } from "lucide-react"
 
-// This would typically come from a database
 const jobData = {
   "sr-ai-research-engineer": {
     title: "Senior AI Research Engineer",
@@ -40,8 +39,8 @@ const jobData = {
   },
 }
 
-export default function JobApplicationPage({ params }: { params: { jobId: string } }) {
-  const jobId = params.jobId
+export default async function JobApplicationPage({ params }: { params: Promise<{ jobId: string }> }) {
+  const { jobId } = await params
   const job = jobData[jobId as keyof typeof jobData] || {
     title: "Unknown Position",
     department: "General",
@@ -62,7 +61,7 @@ export default function JobApplicationPage({ params }: { params: { jobId: string
             <h1 className="text-4xl font-bold mb-4">{job.title}</h1>
             <div className="flex items-center text-gray-400 space-x-4">
               <span>{job.department}</span>
-              <span>•</span>
+              <span>|</span>
               <span>{job.location}</span>
             </div>
           </div>

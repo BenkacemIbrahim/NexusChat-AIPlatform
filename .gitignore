@@ -1,7 +1,39 @@
-setup.sql
+# OS
 .DS_Store
 Thumbs.db
-.idea
-.vscode
+
+# Editor and IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
 *.log
-tmp
+
+# Temp
+tmp/
+temp/
+
+# Environment files
+**/.env
+**/.env.local
+**/.env.*.local
+!**/.env.example
+
+# Backend (Laravel)
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/public/hot
+backend/public/storage
+backend/storage/*.key
+backend/storage/framework/cache/data/*
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/*.tsbuildinfo

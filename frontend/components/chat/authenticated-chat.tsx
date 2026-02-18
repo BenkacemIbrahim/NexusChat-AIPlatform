@@ -5,13 +5,13 @@ import { ChatInterface } from "@/components/chat-interface"
 import { ChatSidebar } from "@/components/chat-sidebar"
 import { ChatHeader } from "@/components/chat/chat-header"
 import { useAuth } from "@/hooks/use-auth"
-import type { Message } from "@ai-sdk/react"
 import { API_URL } from "@/lib/config"
+import type { ChatMessage } from "@/lib/chat"
 
 export function AuthenticatedChat() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuth()
@@ -45,7 +45,11 @@ export function AuthenticatedChat() {
       .then(async (res) => {
         if (!res.ok) return
         const data = await res.json()
-        const items = (data.data ?? []).map((m: any) => ({ role: m.role, content: m.content })) as Message[]
+        const items = (data.data ?? []).map((m: any) => ({
+          id: String(m.id ?? crypto.randomUUID()),
+          role: m.role,
+          content: m.content,
+        })) as ChatMessage[]
         setMessages(items)
       })
       .catch(() => { })
@@ -74,9 +78,17 @@ export function AuthenticatedChat() {
       })
       if (!res.ok) throw new Error("Chat failed")
       const data = await res.json()
-      const userMsg = { role: data.userMessage.role, content: data.userMessage.content } as Message
+      const userMsg = {
+        id: String(data.userMessage.id ?? crypto.randomUUID()),
+        role: data.userMessage.role,
+        content: data.userMessage.content,
+      } as ChatMessage
       const assistantMsg = data.assistantMessage
-        ? ({ role: data.assistantMessage.role, content: data.assistantMessage.content } as Message)
+        ? ({
+            id: String(data.assistantMessage.id ?? crypto.randomUUID()),
+            role: data.assistantMessage.role,
+            content: data.assistantMessage.content,
+          } as ChatMessage)
         : null
       setMessages((prev) => (assistantMsg ? [...prev, userMsg, assistantMsg] : [...prev, userMsg]))
       setInput("")

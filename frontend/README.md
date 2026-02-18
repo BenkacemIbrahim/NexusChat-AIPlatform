@@ -1,62 +1,53 @@
-# AI Chat Frontend
+# Frontend (Next.js App)
 
-The modern web client for the AI Chat application, built with Next.js 15.
+Next.js 15 client for the AI Chat platform. Includes marketing pages, auth flows, dashboard, and authenticated chat UI.
 
-## Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui (Radix UI)
-- **Icons**: Lucide React
-- **AI Integration**: Vercel AI SDK
+## Stack
 
-## Installation
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- Radix + custom UI components
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   # or
-   pnpm install
-   ```
+## Setup
 
-2. **Environment Configuration**
-   Copy the example environment file.
-   ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local` to match your backend URL (default `http://localhost:8000`) and add any necessary API keys.
+```bash
+cp .env.example .env.local
+npm install
+npm run dev
+```
 
-   Notes:
-   - The client currently calls `http://localhost:8000` directly in hooks and components (see `frontend/hooks/use-auth.tsx:28` and `frontend/components/chat/authenticated-chat.tsx:64`). If you change the backend URL, update these references or provide an environment variable and refactor accordingly.
+Default app URL: `http://localhost:3000`
 
-3. **Start Dev Server**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-## Project Structure
-- `app/`: Next.js App Router pages and layouts
-- `components/`: Reusable UI components
-- `lib/`: Utility functions and shared logic
-- `hooks/`: Custom React hooks
+`frontend/.env.local`:
 
-Key Screens & Flows
-
-- Authentication: Login and Signup using the backend API (`/api/login`, `/api/register`, `/api/me`)
-  - Hook: `frontend/hooks/use-auth.tsx:50`
-- Chat: Authenticated chat interface sends messages to the backend `/api/chat` and renders conversation history
-  - Component: `frontend/components/chat/authenticated-chat.tsx:64`
-- Documentation UI: Navigation and content components are present under `components/docs/*` for product documentation and guides
-  - Navigation: `frontend/components/docs/docs-navigation.tsx:1`
+- `NEXT_PUBLIC_API_URL=http://localhost:8000`
 
 ## Scripts
-- `npm run dev`: Runs the development server
-- `npm run build`: Builds the application for production
-- `npm start`: Starts the production server
-- `npm run lint`: Runs ESLint
 
-## Development Tips
+- `npm run dev` - start development server
+- `npm run lint` - run ESLint
+- `npm run typecheck` - run TypeScript checks
+- `npm run build` - production build
+- `npm run start` - start production server
 
-- Ensure the backend is running at `http://localhost:8000` and that CORS allows `http://localhost:3000` (`backend/config/cors.php:1`)
-- For local testing without authentication, you can browse the chat preview page; full chat requires login
-- The Next.js route `app/api/chat/route.ts:1` demonstrates a server-side streaming integration using the Vercel AI SDK; the UI uses the Laravel backend by default
+## Key Areas
+
+- Auth context: `frontend/hooks/use-auth.tsx`
+- Chat page: `frontend/app/chat/page.tsx`
+- Authenticated chat client: `frontend/components/chat/authenticated-chat.tsx`
+- API URL config: `frontend/lib/config.ts`
+
+## Build and Quality
+
+This app is configured to fail build on type or lint errors.
+
+Recommended local verification:
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```

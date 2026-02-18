@@ -28,7 +28,6 @@ export const metadata: Metadata = {
     description: "Experience the future of AI conversation",
     type: "website",
   },
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({

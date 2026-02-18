@@ -1,5 +1,4 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -13,7 +12,6 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 export default function ChatPage() {
   const { user, isLoading } = useAuth()
-  const router = useRouter()
 
   if (isLoading) {
     return (

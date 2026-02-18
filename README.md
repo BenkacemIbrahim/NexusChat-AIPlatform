@@ -1,39 +1,42 @@
-# AI Chat Application
+# AI Chat Platform
 
-Full‑stack AI chat platform combining a Laravel 11 REST API and a Next.js 15 client. It provides user authentication, message history, and AI responses powered by Groq.
+Production-style monorepo for a full-stack AI chat product:
 
-## Project Structure
+- `backend/`: Laravel 11 REST API with Sanctum authentication and Groq integration
+- `frontend/`: Next.js 15 application with a complete marketing + product UI and authenticated chat flow
 
-This monorepo contains both the backend API and the frontend client.
+## Highlights
 
-- `backend/`: Laravel 11 REST API (MySQL, Sanctum auth, Groq integration)
-- `frontend/`: Next.js 15 client (Tailwind CSS, shadcn/ui)
+- Token-based auth (`register`, `login`, `logout`, `me`) via Laravel Sanctum
+- Persistent conversation history per user
+- AI reply generation through Groq (`/api/chat`)
+- Modern frontend built with App Router, Tailwind CSS, and reusable UI components
+- CI-ready project structure with lint/type/build/test checks
 
-## Key Features
-- **⚡ Lightning Speed**: Powered by Groq API for near-instant AI responses.
-- **🧠 Advanced Reasoning**: Leveraging generic LLM capabilities for complex problem solving.
-- **🛡️ Enterprise Security**: Built with secure authentication and data protection standards.
-- **🌐 Global Access**: Designed for multi-language support (backend capable).
-- **🗣️ Voice Enabled**: Frontend interface supports voice interaction patterns.
-- **💻 Developer Ready**: Clean API structure and modern tech stack.
+## Monorepo Structure
+
+```text
+.
+├── backend/                 # Laravel API
+├── frontend/                # Next.js app
+├── docs/
+│   ├── API.md
+│   ├── ARCHITECTURE.md
+│   └── LINKEDIN_FEATURE.md
+├── setup.sql                # Optional manual DB bootstrap
+└── .github/workflows/ci.yml
+```
 
 ## Prerequisites
 
 - PHP 8.2+
-- Composer (latest)
-- Node.js v20+
-- MySQL 8.0 (or MariaDB)
+- Composer
+- Node.js 20+
+- MySQL 8+ (or MariaDB)
 
-## Getting Started
+## Quick Start
 
-### 1. Database Setup
-Create a MySQL database named `ai_chat`.
-```sql
-CREATE DATABASE ai_chat;
-```
-
-### 2. Backend Setup
-Navigate to `backend` and follow the [Backend README](./backend/README.md).
+### 1) Clone and configure backend
 
 ```bash
 cd backend
@@ -44,8 +47,7 @@ php artisan migrate
 php artisan serve
 ```
 
-### 3. Frontend Setup
-Navigate to `frontend` and follow the [Frontend README](./frontend/README.md).
+### 2) Configure and run frontend
 
 ```bash
 cd frontend
@@ -54,44 +56,63 @@ npm install
 npm run dev
 ```
 
-By default the client calls `http://localhost:8000` for API requests.
+Default local URLs:
 
-## Workspace Scripts
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:8000`
 
-- Backend: `composer install`, `php artisan migrate`, `php artisan serve`
-- Frontend: `npm run dev`, `npm run build`, `npm run lint`
+## Environment Variables
 
-## Architecture Overview
+### Backend (`backend/.env`)
 
-- Authentication: Laravel Sanctum issues bearer tokens on login and registration. The frontend stores `auth_token` and includes it as `Authorization: Bearer <token>` for protected routes
-  - Routes: `backend/routes/api.php:1`
-- Messages: User messages are stored in `messages` and exposed via a paginated API
-  - Controller: `backend/app/Http/Controllers/MessageController.php:1`
-- Chat: Requests are proxied to Groq and the assistant reply is persisted alongside the user message
-  - Controller: `backend/app/Http/Controllers/ChatController.php:1`
-  - Service: `backend/app/Services/GroqService.php:1`
-- CORS: Configured to allow the local Next.js dev origin and credentials
-  - Config: `backend/config/cors.php:1`
+- `DB_*` variables for database connection
+- `GROQ_API_KEY` (required for `/api/chat`)
+- Optional:
+  - `GROQ_BASE_URI` (default `https://api.groq.com/openai/v1`)
+  - `GROQ_CHAT_PATH` (default `/chat/completions`)
+  - `GROQ_DEFAULT_MODEL` (default `llama-3.3-70b-versatile`)
 
-## Environment Configuration
+### Frontend (`frontend/.env.local`)
 
-Backend `.env` (minimum):
+- `NEXT_PUBLIC_API_URL` (default `http://localhost:8000`)
 
-- `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
-- `GROQ_API_KEY` (required)
-- Optional Groq overrides: `GROQ_BASE_URI`, `GROQ_CHAT_PATH`, `GROQ_DEFAULT_MODEL` (defaults in `backend/config/services.php:1`)
+## Scripts
 
-Frontend `.env.local`:
+### Backend
 
-- Provide the backend URL if you change it from the default `http://localhost:8000`
+- `php artisan serve`
+- `php artisan migrate`
+- `php artisan test`
 
-## API Overview
+### Frontend
 
-Detailed API documentation lives in [backend/README.md](./backend/README.md#api-reference), including authentication flow, endpoints, parameters, and example payloads.
+- `npm run dev`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
 
-## Contributing
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+## Quality Status
+
+Current local checks:
+
+- `backend`: `php artisan test` passes
+- `frontend`: `npm run lint`, `npm run typecheck`, and `npm run build` pass
+
+## Documentation
+
+- Architecture: `docs/ARCHITECTURE.md`
+- API reference: `docs/API.md`
+- Backend details: `backend/README.md`
+- Frontend details: `frontend/README.md`
+- LinkedIn-ready project summary: `docs/LINKEDIN_FEATURE.md`
+
+## Open Source Standards
+
+- Contribution guide: `CONTRIBUTING.md`
+- Security policy: `SECURITY.md`
+- Code of conduct: `CODE_OF_CONDUCT.md`
+- Changelog: `CHANGELOG.md`
+
+## License
+
+Licensed under MIT. See `LICENSE`.

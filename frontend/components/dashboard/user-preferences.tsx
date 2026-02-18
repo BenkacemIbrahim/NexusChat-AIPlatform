@@ -8,37 +8,40 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/hooks/use-auth"
 import { useToast } from "@/hooks/use-toast"
+import type { User as AuthUser } from "@/lib/auth"
 import { Globe, User, Volume2, Eye, Type, Save, MessageCircle } from "lucide-react"
 
 const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "zh", name: "中文", flag: "🇨🇳" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
+  { code: "en", name: "English", label: "EN" },
+  { code: "es", name: "Spanish", label: "ES" },
+  { code: "fr", name: "French", label: "FR" },
+  { code: "de", name: "German", label: "DE" },
+  { code: "zh", name: "Chinese", label: "ZH" },
+  { code: "ja", name: "Japanese", label: "JA" },
 ]
 
 const aiPersonas = [
-  { id: "professional", name: "Professional Assistant", icon: "👔" },
-  { id: "creative", name: "Creative Writer", icon: "🎨" },
-  { id: "teacher", name: "Patient Teacher", icon: "📚" },
-  { id: "casual", name: "Casual Friend", icon: "😊" },
+  { id: "professional", name: "Professional Assistant", icon: "PRO" },
+  { id: "creative", name: "Creative Writer", icon: "CRT" },
+  { id: "teacher", name: "Patient Teacher", icon: "TCH" },
+  { id: "casual", name: "Casual Friend", icon: "CAS" },
 ]
+
+type UserPreferencesState = AuthUser["preferences"]
+
+const defaultPreferences: UserPreferencesState = {
+  theme: "dark",
+  language: "en",
+  aiPersona: "professional",
+  voiceEnabled: true,
+  highContrast: false,
+  fontSize: "medium",
+}
 
 export function UserPreferences() {
   const { user, updatePreferences } = useAuth()
   const { toast } = useToast()
-  const [preferences, setPreferences] = useState(
-    user?.preferences || {
-      theme: "dark",
-      language: "en",
-      aiPersona: "professional",
-      voiceEnabled: true,
-      highContrast: false,
-      fontSize: "medium",
-    },
-  )
+  const [preferences, setPreferences] = useState<UserPreferencesState>(user?.preferences ?? defaultPreferences)
 
   const handleSave = () => {
     updatePreferences(preferences)
@@ -50,7 +53,6 @@ export function UserPreferences() {
 
   return (
     <div className="space-y-6">
-      {/* Test Your Settings Card */}
       <Card className="bg-gradient-to-r from-gray-900/20 to-gray-800/20 border-gray-800">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
@@ -70,7 +72,6 @@ export function UserPreferences() {
         </CardContent>
       </Card>
 
-      {/* Language Selection */}
       <Card className="bg-gray-900/30 border-gray-800 hover:border-gray-700 transition-all duration-300">
         <CardHeader>
           <CardTitle className="flex items-center text-white">
@@ -91,7 +92,7 @@ export function UserPreferences() {
                 }`}
               >
                 <div className="flex items-center space-x-2">
-                  <span className="text-lg">{language.flag}</span>
+                  <span className="text-xs rounded border border-gray-600 px-2 py-1 text-gray-300">{language.label}</span>
                   <span className="text-sm font-medium text-white">{language.name}</span>
                 </div>
               </button>
@@ -100,7 +101,6 @@ export function UserPreferences() {
         </CardContent>
       </Card>
 
-      {/* AI Persona */}
       <Card className="bg-gray-900/30 border-gray-800 hover:border-gray-700 transition-all duration-300">
         <CardHeader>
           <CardTitle className="flex items-center text-white">
@@ -121,7 +121,7 @@ export function UserPreferences() {
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{persona.icon}</span>
+                  <span className="text-xs rounded border border-gray-600 px-2 py-1 text-gray-300">{persona.icon}</span>
                   <span className="font-medium text-white">{persona.name}</span>
                 </div>
               </button>
@@ -130,7 +130,6 @@ export function UserPreferences() {
         </CardContent>
       </Card>
 
-      {/* Advanced Settings */}
       <Card className="bg-gray-900/30 border-gray-800 hover:border-gray-700 transition-all duration-300">
         <CardHeader>
           <CardTitle className="flex items-center text-white">
@@ -173,10 +172,15 @@ export function UserPreferences() {
               <Label className="font-medium text-white">Font Size</Label>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {["small", "medium", "large"].map((size) => (
+              {(["small", "medium", "large"] as const).map((size) => (
                 <button
                   key={size}
-                  onClick={() => setPreferences((prev) => ({ ...prev, fontSize: size as any }))}
+                  onClick={() =>
+                    setPreferences((prev) => ({
+                      ...prev,
+                      fontSize: size,
+                    }))
+                  }
                   className={`p-2 rounded-lg border transition-all capitalize ${
                     preferences.fontSize === size
                       ? "border-gray-500 bg-gray-900/20 text-gray-400"

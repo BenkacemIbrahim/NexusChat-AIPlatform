@@ -146,7 +146,7 @@ export function ContactForm() {
         message: "",
       })
       setErrors({})
-    } catch (error) {
+    } catch {
       // Handle submission error
       toast({
         title: "Failed to send message",

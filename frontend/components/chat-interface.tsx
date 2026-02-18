@@ -19,11 +19,11 @@ import {
   Zap,
 } from "lucide-react"
 import { ChatMessage } from "@/components/chat-message"
-import type { Message } from "@ai-sdk/react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import type { ChatMessage as ChatMessageType } from "@/lib/chat"
 
 interface ChatInterfaceProps {
-  messages: Message[]
+  messages: ChatMessageType[]
   input: string
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void

@@ -1,33 +1,43 @@
 import { MessageCircle, Clock, TrendingUp, Star } from "lucide-react"
 
-const stats = [
+type StatChangeType = "positive" | "negative" | "neutral"
+
+interface DashboardStat {
+  icon: typeof MessageCircle
+  title: string
+  value: string
+  change: string
+  changeType: StatChangeType
+}
+
+const stats: DashboardStat[] = [
   {
     icon: MessageCircle,
     title: "Total Conversations",
     value: "1,247",
     change: "+12%",
-    changeType: "positive" as const,
+    changeType: "positive",
   },
   {
     icon: Clock,
     title: "Hours Saved",
     value: "156",
     change: "+8%",
-    changeType: "positive" as const,
+    changeType: "positive",
   },
   {
     icon: TrendingUp,
     title: "Productivity Boost",
     value: "34%",
     change: "+5%",
-    changeType: "positive" as const,
+    changeType: "positive",
   },
   {
     icon: Star,
     title: "Satisfaction Score",
     value: "4.9",
     change: "0%",
-    changeType: "neutral" as const,
+    changeType: "neutral",
   },
 ]
 

@@ -21,5 +21,5 @@ export async function POST(req: Request) {
 Always strive to be accurate, helpful, and engaging in your responses. If you're unsure about something, acknowledge the uncertainty rather than guessing.`,
   })
 
-  return result.toDataStreamResponse()
+  return result.toTextStreamResponse()
 }

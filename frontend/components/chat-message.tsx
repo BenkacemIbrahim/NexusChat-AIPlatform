@@ -4,10 +4,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Copy, ThumbsUp, ThumbsDown, User, Zap } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import type { Message } from "@ai-sdk/react"
+import type { ChatMessage as ChatMessageType } from "@/lib/chat"
 
 interface ChatMessageProps {
-  message: Message
+  message: ChatMessageType
 }
 
 export function ChatMessage({ message }: ChatMessageProps) {
@@ -21,7 +21,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         title: "Copied to clipboard",
         description: "Message content has been copied to your clipboard.",
       })
-    } catch (err) {
+    } catch {
       toast({
         title: "Failed to copy",
         description: "Could not copy message to clipboard.",
@@ -45,7 +45,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
           }`}
         >
           <div className="prose prose-sm max-w-none dark:prose-invert">
-            {message.content.split("\n").map((line, index) => (
+            {message.content.split("\n").map((line: string, index: number) => (
               <p key={index} className={`${index === 0 ? "mt-0" : ""} ${isUser ? "text-white" : "text-gray-300"}`}>
                 {line}
               </p>

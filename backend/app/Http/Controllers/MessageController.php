@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MessagesIndexRequest;
+use App\Http\Requests\MessageStoreRequest;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +28,17 @@ class MessageController extends Controller
         ]);
     }
 
-    public function store(MessagesIndexRequest $request)
+    public function store(MessageStoreRequest $request)
     {
-        return response()->json(['message' => 'Not implemented'], 404);
+        $data = $request->validated();
+
+        $message = Message::create([
+            'user_id' => Auth::id(),
+            'role' => $data['role'] ?? 'user',
+            'content' => $data['content'],
+            'model' => $data['model'] ?? null,
+        ]);
+
+        return response()->json($message, 201);
     }
 }
