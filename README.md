@@ -22,7 +22,7 @@ Production-style monorepo for a full-stack AI chat product:
 ├── docs/
 │   ├── API.md
 │   ├── ARCHITECTURE.md
-│   └── LINKEDIN_FEATURE.md
+│ 
 ├── setup.sql                # Optional manual DB bootstrap
 └── .github/workflows/ci.yml
 ```
